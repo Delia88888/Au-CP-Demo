@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vantage - Earn</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+  a { text-decoration: none; color: inherit; }
+
+  /* Navbar */
+  .navbar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fff; padding: 0 32px; height: 56px;
+    border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100;
+  }
+  .nav-left { display: flex; align-items: center; gap: 28px; }
+  .logo { display: flex; align-items: center; gap: 4px; font-size: 20px; font-weight: 700; color: #1a1a1a; }
+  .logo svg { width: 28px; height: 28px; }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a { font-size: 14px; color: #333; font-weight: 500; }
+  .nav-links a:hover { color: #e63916; }
+  .nav-links a.active { color: #1a1a1a; font-weight: 700; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-right .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%; border: none; background: none;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; color: #555; font-size: 18px;
+  }
+  .nav-right .icon-btn:hover { background: #f0f0f0; }
+  .btn-deposit-nav {
+    background: #e63916; color: #fff; border: none; border-radius: 20px;
+    padding: 8px 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .btn-deposit-nav:hover { background: #d42f10; }
+  .account-nav { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; font-weight: 500; }
+  .account-nav .avatar {
+    width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #f0c27f, #fc5c7d);
+  }
+
+  /* Wallet Dropdown */
+  .nav-dropdown { position: relative; padding: 16px 0; margin: -16px 0; }
+  .nav-dropdown > .nav-dropdown-trigger {
+    font-size: 14px; color: #333; font-weight: 500; cursor: pointer;
+    background: none; border: none; font-family: inherit; padding: 4px 0;
+  }
+  .nav-dropdown > .nav-dropdown-trigger:hover { color: #e63916; }
+  .nav-dropdown-panel {
+    display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    background: #fff; border: 1px solid #eee; border-radius: 12px;
+    padding: 20px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    white-space: nowrap; z-index: 200; min-width: 520px;
+  }
+  .nav-dropdown:hover .nav-dropdown-panel { display: flex; gap: 20px; }
+  .dropdown-card {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border-radius: 10px; cursor: pointer; flex: 1; text-decoration: none; color: inherit;
+  }
+  .dropdown-card:hover { background: #f7f7f7; }
+  .dropdown-card-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #333; }
+  .dropdown-card-icon svg { width: 24px; height: 24px; }
+  .dropdown-card-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .dropdown-card-desc { font-size: 12px; color: #888; white-space: normal; line-height: 1.4; }
+  .badge-new { background: #e63916; color: #fff; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; }
+
+  /* Main */
+  .main { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+
+  /* Hero Section */
+  .hero { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0; }
+  .hero-left { flex: 1; }
+  .hero-title { font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+  .hero-desc { font-size: 15px; color: #555; line-height: 1.6; max-width: 400px; }
+  .hero-banner {
+    background: #f7f7f7; border-radius: 16px; padding: 28px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    min-width: 400px; position: relative; overflow: hidden;
+  }
+  .hero-banner-text h3 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .hero-banner-text p { font-size: 14px; color: #666; }
+  .hero-banner-icon {
+    width: 100px; height: 80px; display: flex; align-items: center; justify-content: center;
+  }
+  .hero-banner-icon .coins {
+    width: 70px; height: 70px; background: linear-gradient(135deg, #ff9800, #f57c00);
+    border-radius: 12px; position: relative; transform: rotate(-10deg);
+    box-shadow: 0 4px 12px rgba(245,124,0,0.3);
+  }
+  .hero-banner-icon .coins::after {
+    content: ''; position: absolute; top: -6px; right: -6px; width: 30px; height: 30px;
+    background: #4caf50; border-radius: 6px; transform: rotate(15deg);
+  }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid #e0e0e0; margin: 32px 0; }
+
+  /* Value Section */
+  .value-section {
+    display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 40px;
+  }
+  .value-left { display: flex; align-items: flex-start; gap: 48px; }
+  .value-main {}
+  .value-label { font-size: 14px; color: #888; margin-bottom: 8px; }
+  .value-amount-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .eth-icon {
+    width: 32px; height: 32px; border-radius: 50%; background: #e8eaf6;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .value-amount { font-size: 36px; font-weight: 700; letter-spacing: -1px; }
+  .value-currency { font-size: 16px; font-weight: 500; color: #666; margin-left: 4px; }
+  .value-approx { font-size: 14px; color: #888; margin-left: 42px; }
+  .yield-group { display: flex; gap: 48px; padding-top: 4px; }
+  .yield-item {}
+  .yield-label { font-size: 13px; color: #888; margin-bottom: 6px; }
+  .yield-value { font-size: 18px; font-weight: 700; color: #22a06b; }
+  .holdings-link { font-size: 14px; color: #333; font-weight: 500; cursor: pointer; padding-top: 4px; }
+  .holdings-link:hover { color: #e63916; }
+
+  /* Flexible Savings Card */
+  .savings-card {
+    background: #fff; border: 1px solid #eee; border-radius: 16px; padding: 28px 32px; margin-bottom: 24px;
+  }
+  .savings-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+  .savings-table { width: 100%; border-collapse: collapse; }
+  .savings-table thead th {
+    text-align: left; font-size: 13px; font-weight: 500; color: #888;
+    padding: 12px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .savings-table tbody td {
+    padding: 20px 0; font-size: 14px; border-bottom: 1px solid #f5f5f5; vertical-align: middle;
+  }
+  .savings-table tbody tr:last-child td { border-bottom: none; }
+  .coin-cell { display: flex; align-items: center; gap: 12px; }
+  .coin-icon {
+    width: 36px; height: 36px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 700;
+  }
+  .coin-icon.usdc { background: #2775ca; }
+  .coin-icon.usdt { background: #26a17b; }
+  .coin-icon.eth { background: #e8eaf6; color: #333; }
+  .coin-icon.btc { background: #f7931a; }
+  .coin-name { font-weight: 600; font-size: 15px; }
+  .badge-platform {
+    background: #fce4ec; color: #e63916; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 4px; margin-left: 8px;
+  }
+  .apr-value { font-weight: 600; }
+  .btn-subscribe {
+    padding: 10px 22px; border-radius: 20px; border: none;
+    background: #e67350; color: #fff; font-size: 13px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-subscribe:hover { background: #d4613e; }
+  .sort-arrow { font-size: 10px; margin-left: 4px; color: #888; }
+
+  /* FAQ Card */
+  .faq-card {
+    background: #fff; border: 1px solid #eee; border-radius: 16px; padding: 28px 32px;
+  }
+  .faq-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+  .faq-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0; border-top: 1px solid #f0f0f0; cursor: pointer;
+  }
+  .faq-item:first-of-type { border-top: none; }
+  .faq-question { font-size: 15px; font-weight: 500; }
+  .faq-arrow { font-size: 14px; color: #888; transition: transform 0.2s; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-left">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <path d="M4 24L14 4l10 20H4z" fill="#e63916"/>
+        <path d="M10 24L14 12l4 12H10z" fill="#1a1a1a"/>
+      </svg>
+      Vantage
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="accounts.html">Accounts</a>
+      <a href="#">Trade</a>
+      <a href="#">Copy Trading</a>
+      <a href="payment.html">Payment</a>
+      <div class="nav-dropdown">
+        <span class="nav-dropdown-trigger">Wallet</span>
+        <div class="nav-dropdown-panel">
+          <a class="dropdown-card" href="earn.html">
+            <div class="dropdown-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <div class="dropdown-card-title">Earn <span class="badge-new">New</span></div>
+              <div class="dropdown-card-desc">Earn Up to 4.12% APR on USDT Flexible</div>
+            </div>
+          </a>
+          <a class="dropdown-card" href="#">
+            <div class="dropdown-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="dropdown-card-title">Card</div>
+              <div class="dropdown-card-desc">Virtual and physical card</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <a href="#">Promotions</a>
+      <a href="#">More</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="btn-deposit-nav">Deposit</button>
+    <button class="icon-btn" title="Download">&#8615;</button>
+    <button class="icon-btn" title="Chat">&#128172;</button>
+    <button class="icon-btn" title="Language">&#127760;</button>
+    <div class="account-nav">
+      <div class="avatar"></div>
+      Account &#9662;
+    </div>
+  </div>
+</nav>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-left">
+      <h1 class="hero-title">Earn</h1>
+      <p class="hero-desc">Flexible Savings is a principal protected product. Enjoy greater flexibility and higher returns.</p>
+    </div>
+    <div class="hero-banner">
+      <div class="hero-banner-text">
+        <h3>V-Wallet Flexible Savings</h3>
+        <p>Flexible access, effortless return!</p>
+      </div>
+      <div class="hero-banner-icon">
+        <div class="coins"></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Value Section -->
+  <div class="value-section">
+    <div class="value-left">
+      <div class="value-main">
+        <div class="value-label">Total Value</div>
+        <div class="value-amount-row">
+          <div class="eth-icon">&#9830;</div>
+          <span class="value-amount">0.0010438</span>
+          <span class="value-currency">ETH</span>
+        </div>
+        <div class="value-approx">&asymp; 396.72 JPY</div>
+      </div>
+      <div class="yield-group">
+        <div class="yield-item">
+          <div class="yield-label">Yesterday's Yield</div>
+          <div class="yield-value">0.08 JPY</div>
+        </div>
+        <div class="yield-item">
+          <div class="yield-label">Total Yield</div>
+          <div class="yield-value">10.68 JPY</div>
+        </div>
+      </div>
+    </div>
+    <div class="holdings-link">My Holdings &rsaquo;</div>
+  </div>
+
+  <!-- Flexible Savings -->
+  <div class="savings-card">
+    <h2>Flexible Savings</h2>
+    <table class="savings-table">
+      <thead>
+        <tr>
+          <th style="width:28%">Coin</th>
+          <th style="width:22%">Duration</th>
+          <th style="width:28%">Est. APR <span class="sort-arrow">&#9660;</span></th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="coin-cell">
+              <div class="coin-icon usdc">$</div>
+              <span class="coin-name">USDC</span>
+              <span class="badge-platform">Platform Rewards</span>
+            </div>
+          </td>
+          <td>Flexible</td>
+          <td><span class="apr-value">1.35%-10.35%</span></td>
+          <td><button class="btn-subscribe">Subscribe</button></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="coin-cell">
+              <div class="coin-icon usdt">&#8366;</div>
+              <span class="coin-name">USDT</span>
+              <span class="badge-platform">Platform Rewards</span>
+            </div>
+          </td>
+          <td>Flexible</td>
+          <td><span class="apr-value">1.73%-10.23%</span></td>
+          <td><button class="btn-subscribe">Subscribe</button></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="coin-cell">
+              <div class="coin-icon eth">&#9830;</div>
+              <span class="coin-name">ETH</span>
+              <span class="badge-platform">Platform Rewards</span>
+            </div>
+          </td>
+          <td>Flexible</td>
+          <td><span class="apr-value">0.80%-10.00%</span></td>
+          <td><button class="btn-subscribe">Subscribe</button></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="coin-cell">
+              <div class="coin-icon btc">&#8383;</div>
+              <span class="coin-name">BTC</span>
+              <span class="badge-platform">Platform Rewards</span>
+            </div>
+          </td>
+          <td>Flexible</td>
+          <td><span class="apr-value">0.10%-10.00%</span></td>
+          <td><button class="btn-subscribe">Subscribe</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FAQ -->
+  <div class="faq-card">
+    <h2>FAQ</h2>
+    <div class="faq-item">
+      <span class="faq-question">What is Flexible Savings?</span>
+      <span class="faq-arrow">&#9662;</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
