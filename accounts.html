@@ -77,6 +77,8 @@
     font-family: inherit;
   }
   .page-tabs .ptab:hover { color: #333; }
+  .tab-badge-row { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+  .vwallet-badge { font-size: 12px; font-weight: 600; color: #666; background: #f0f0f0; padding: 4px 12px; border-radius: 6px; }
   .page-tabs .ptab.active { color: #1a1a1a; font-weight: 600; border-bottom-color: #1a1a1a; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
@@ -378,6 +380,7 @@
 
   <!-- ===== FUNDING TAB ===== -->
   <div id="funding" class="tab-panel">
+    <div class="tab-badge-row"><span class="vwallet-badge">V-Wallet</span></div>
     <div class="balance-card">
       <div class="balance-top">
         <div class="est-label">Est. Total Value <span class="eye-icon">&#9673;</span></div>
