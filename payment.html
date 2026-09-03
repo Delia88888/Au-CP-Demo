@@ -182,6 +182,18 @@
   .acct-name { font-size: 14px; font-weight: 500; color: #333; }
   .account-option-balance { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
   .account-option-id { font-size: 13px; color: #999; }
+
+  /* Currency Modal */
+  .currency-tabs { display: flex; gap: 24px; margin-bottom: 20px; border-bottom: 1px solid #f0f0f0; }
+  .currency-tabs .ctab { padding-bottom: 10px; font-size: 15px; font-weight: 600; color: #888; cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; font-family: inherit; }
+  .currency-tabs .ctab.active { color: #1a1a1a; border-bottom-color: #1a1a1a; }
+  .currency-tabs .ctab:hover { color: #333; }
+  .currency-list { list-style: none; max-height: 400px; overflow-y: auto; }
+  .currency-item { display: flex; align-items: center; gap: 14px; padding: 14px 8px; border-bottom: 1px solid #f5f5f5; cursor: pointer; border-radius: 8px; text-decoration: none; color: inherit; }
+  .currency-item:hover { background: #f7f7f7; }
+  .currency-item:last-child { border-bottom: none; }
+  .currency-flag { font-size: 24px; width: 32px; text-align: center; }
+  .currency-code { font-size: 15px; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -355,6 +367,43 @@ document.querySelectorAll(".btn-deposit-nav").forEach(function(btn){
 });
 document.getElementById("depositModal").addEventListener("click",function(e){
   if(e.target===this) this.classList.remove("show");
+});
+</script>
+
+<!-- Currency Modal -->
+<div class="modal-overlay" id="currencyModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('currencyModal').classList.remove('show')">&times;</button>
+    <h3>Select Currency</h3>
+    <div class="currency-tabs">
+      <button class="ctab active">Fiat</button>
+      <button class="ctab">Crypto</button>
+    </div>
+    <div class="currency-list">
+      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127482;&#127480;</span><span class="currency-code">USD</span></a>
+      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127468;&#127463;</span><span class="currency-code">GBP</span></a>
+      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127466;&#127482;</span><span class="currency-code">EUR</span></a>
+      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127464;&#127462;</span><span class="currency-code">CAD</span></a>
+      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127462;&#127482;</span><span class="currency-code">AUD</span></a>
+      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127475;&#127487;</span><span class="currency-code">NZD</span></a>
+      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127480;&#127468;</span><span class="currency-code">SGD</span></a>
+      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127469;&#127472;</span><span class="currency-code">HKD</span></a>
+      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127471;&#127477;</span><span class="currency-code">JPY</span></a>
+      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127462;&#127466;</span><span class="currency-code">AED</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.account-option[href="accounts.html#funding"]').forEach(function(el){
+  el.addEventListener('click', function(e){
+    e.preventDefault();
+    document.getElementById('depositModal').classList.remove('show');
+    document.getElementById('currencyModal').classList.add('show');
+  });
+});
+document.getElementById('currencyModal').addEventListener('click', function(e){
+  if(e.target===this) this.classList.remove('show');
 });
 </script>
 </body>
