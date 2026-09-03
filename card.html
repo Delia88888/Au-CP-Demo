@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vantage - V-Card</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #fff; color: #1a1a1a; }
+  a { text-decoration: none; color: inherit; }
+
+  /* Navbar */
+  .navbar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fff; padding: 0 32px; height: 56px;
+    border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100;
+  }
+  .nav-left { display: flex; align-items: center; gap: 28px; }
+  .logo { display: flex; align-items: center; gap: 4px; font-size: 20px; font-weight: 700; color: #1a1a1a; }
+  .logo svg { width: 28px; height: 28px; }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a { font-size: 14px; color: #333; font-weight: 500; }
+  .nav-links a:hover { color: #e63916; }
+  .nav-links a.active { color: #1a1a1a; font-weight: 700; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-right .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%; border: none; background: none;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; color: #555; font-size: 18px;
+  }
+  .nav-right .icon-btn:hover { background: #f0f0f0; }
+  .btn-deposit-nav {
+    background: #e63916; color: #fff; border: none; border-radius: 20px;
+    padding: 8px 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .btn-deposit-nav:hover { background: #d42f10; }
+  .account-nav { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; font-weight: 500; }
+  .account-nav .avatar {
+    width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #f0c27f, #fc5c7d);
+  }
+
+  /* Wallet Dropdown */
+  .nav-dropdown { position: relative; padding: 16px 0; margin: -16px 0; }
+  .nav-dropdown > .nav-dropdown-trigger {
+    font-size: 14px; color: #333; font-weight: 500; cursor: pointer;
+    background: none; border: none; font-family: inherit; padding: 4px 0;
+  }
+  .nav-dropdown > .nav-dropdown-trigger:hover { color: #e63916; }
+  .nav-dropdown-panel {
+    display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    background: #fff; border: 1px solid #eee; border-radius: 12px;
+    padding: 20px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    white-space: nowrap; z-index: 200; min-width: 520px;
+  }
+  .nav-dropdown:hover .nav-dropdown-panel { display: flex; gap: 20px; }
+  .dropdown-card {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border-radius: 10px; cursor: pointer; flex: 1; text-decoration: none; color: inherit;
+  }
+  .dropdown-card:hover { background: #f7f7f7; }
+  .dropdown-card-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #333; }
+  .dropdown-card-icon svg { width: 24px; height: 24px; }
+  .dropdown-card-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .dropdown-card-desc { font-size: 12px; color: #888; white-space: normal; line-height: 1.4; }
+  .badge-new { background: #e63916; color: #fff; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #2a2a2a 0%, #3d3d3d 50%, #e8e8e8 100%);
+    padding: 60px 0; color: #fff;
+  }
+  .hero-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .hero-left { flex: 1; }
+  .hero-label { font-size: 14px; color: #ccc; display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+  .hero-label .card-ico { font-size: 18px; }
+  .hero-headline { font-size: 40px; font-weight: 800; line-height: 1.15; margin-bottom: 16px; }
+  .hero-sub { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+  .hero-desc { font-size: 14px; color: #ccc; margin-bottom: 24px; }
+  .apply-wrapper { position: relative; display: inline-block; }
+  .btn-apply {
+    padding: 14px 32px; border-radius: 8px; border: none;
+    background: #1a1a1a; color: #fff; font-size: 15px; font-weight: 600;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-apply:hover { background: #333; }
+  .badge-recommend {
+    position: absolute; top: -10px; right: -16px;
+    background: #e63916; color: #fff; font-size: 10px; font-weight: 600;
+    padding: 3px 8px; border-radius: 4px;
+  }
+
+  .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+  .visa-card {
+    width: 280px; height: 170px; background: linear-gradient(135deg, #555 0%, #888 50%, #aaa 100%);
+    border-radius: 16px; padding: 20px; position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .visa-card .virtual-tag {
+    position: absolute; top: 12px; right: 16px; background: rgba(255,255,255,0.2);
+    padding: 2px 10px; border-radius: 10px; font-size: 11px; color: #fff;
+  }
+  .visa-card .card-brand {
+    position: absolute; top: 20px; left: 20px; font-size: 18px; font-weight: 700; color: #fff;
+    font-style: italic;
+  }
+  .visa-card .visa-logo {
+    position: absolute; bottom: 20px; right: 20px; font-size: 22px; font-weight: 800;
+    color: #fff; font-style: italic; letter-spacing: 2px;
+  }
+  .visa-card .card-type {
+    position: absolute; bottom: 20px; left: 20px; font-size: 11px; color: rgba(255,255,255,0.7);
+    letter-spacing: 1px;
+  }
+  .card-meta-row { display: flex; gap: 24px; }
+  .card-meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #999; }
+
+  /* Benefits */
+  .benefits { padding: 60px 0; text-align: center; background: #fff; }
+  .benefits-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .benefits-title { font-size: 28px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .benefits-title .deco { color: #ddd; font-size: 20px; }
+  .benefits-desc { font-size: 15px; color: #888; margin-bottom: 48px; }
+  .benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+  .benefit-item { text-align: center; }
+  .benefit-icon {
+    width: 56px; height: 56px; border-radius: 50%; border: 2px solid #ddd;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 16px; font-size: 24px; color: #333;
+  }
+  .benefit-value { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+  .benefit-label { font-size: 14px; color: #888; }
+
+  /* Bottom Cards */
+  .bottom-section { padding: 0 0 60px; background: #f5f5f5; }
+  .bottom-inner {
+    max-width: 1200px; margin: 0 auto; padding: 40px 24px 0;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;
+  }
+  .info-card {
+    background: #fff; border-radius: 16px; padding: 32px; position: relative; overflow: hidden;
+  }
+  .info-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+
+  /* Application threshold */
+  .threshold-row {
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+  }
+  .threshold-item {
+    background: #f5f5f5; border-radius: 12px; padding: 20px 32px; text-align: center; flex: 1;
+  }
+  .threshold-item .abbr { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+  .threshold-item .full { font-size: 13px; color: #888; }
+  .threshold-plus { font-size: 24px; color: #888; font-weight: 300; }
+
+  /* Payment limit */
+  .limit-content { display: flex; align-items: center; justify-content: space-between; }
+  .limit-amount { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
+  .limit-desc { font-size: 14px; color: #888; }
+  .limit-icon {
+    width: 100px; height: 80px; display: flex; align-items: center; justify-content: center;
+  }
+  .limit-graphic {
+    width: 80px; height: 80px; background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .limit-graphic .bars {
+    display: flex; align-items: flex-end; gap: 4px; height: 40px;
+  }
+  .limit-graphic .bars .bar {
+    width: 10px; border-radius: 3px 3px 0 0;
+  }
+  .limit-graphic .bars .bar:nth-child(1) { height: 16px; background: #bbb; }
+  .limit-graphic .bars .bar:nth-child(2) { height: 24px; background: #999; }
+  .limit-graphic .bars .bar:nth-child(3) { height: 32px; background: #e63916; }
+  .limit-graphic .bars .bar:nth-child(4) { height: 40px; background: #333; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-left">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <path d="M4 24L14 4l10 20H4z" fill="#e63916"/>
+        <path d="M10 24L14 12l4 12H10z" fill="#1a1a1a"/>
+      </svg>
+      Vantage
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="accounts.html">Accounts</a>
+      <a href="#">Trade</a>
+      <a href="#">Copy Trading</a>
+      <a href="payment.html">Payment</a>
+      <div class="nav-dropdown">
+        <span class="nav-dropdown-trigger">Wallet</span>
+        <div class="nav-dropdown-panel">
+          <a class="dropdown-card" href="earn.html">
+            <div class="dropdown-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <div class="dropdown-card-title">Earn <span class="badge-new">New</span></div>
+              <div class="dropdown-card-desc">Earn Up to 4.12% APR on USDT Flexible</div>
+            </div>
+          </a>
+          <a class="dropdown-card" href="card.html">
+            <div class="dropdown-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="dropdown-card-title">Card</div>
+              <div class="dropdown-card-desc">Virtual and physical card</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <a href="#">Promotions</a>
+      <a href="#">More</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="btn-deposit-nav">Deposit</button>
+    <button class="icon-btn" title="Download">&#8615;</button>
+    <button class="icon-btn" title="Chat">&#128172;</button>
+    <button class="icon-btn" title="Language">&#127760;</button>
+    <div class="account-nav">
+      <div class="avatar"></div>
+      Account &#9662;
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-label"><span class="card-ico">&#128179;</span> V-Card</div>
+      <h1 class="hero-headline">10% cash back across<br>the board</h1>
+      <div class="hero-sub">Platinum Card</div>
+      <div class="hero-desc">Abundant Benefits And Preferential Offers</div>
+      <div class="apply-wrapper">
+        <button class="btn-apply">Apply Now</button>
+        <span class="badge-recommend">Recommend</span>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="visa-card">
+        <span class="virtual-tag">Virtual</span>
+        <div class="card-brand">Vantage</div>
+        <div class="card-type">Platinum</div>
+        <div class="visa-logo">VISA</div>
+      </div>
+      <div class="card-meta-row">
+        <div class="card-meta-item"><span>&#9679;</span> USD Card currency</div>
+        <div class="card-meta-item"><span>&#128179;</span> Card issuance fee Free</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Key Card Benefits -->
+<div class="benefits">
+  <div class="benefits-inner">
+    <div class="benefits-title">
+      <span class="deco">&mdash;</span> Key Card Benefits <span class="deco">&mdash;</span>
+    </div>
+    <div class="benefits-desc">Card consumption benefits change according to users' VIP membership levels</div>
+    <div class="benefits-grid">
+      <div class="benefit-item">
+        <div class="benefit-icon">&#8366;</div>
+        <div class="benefit-value">5 USD</div>
+        <div class="benefit-label">Apply new card bonus</div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">&#127873;</div>
+        <div class="benefit-value">10%</div>
+        <div class="benefit-label">Cashback during promotion time up to</div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">&#128200;</div>
+        <div class="benefit-value">20 USD</div>
+        <div class="benefit-label">Monthly cash back up to</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Cards -->
+<div class="bottom-section">
+  <div class="bottom-inner">
+    <div class="info-card">
+      <h3>Application threshold</h3>
+      <div class="threshold-row">
+        <div class="threshold-item">
+          <div class="abbr">POI</div>
+          <div class="full">Proof of Identity</div>
+        </div>
+        <div class="threshold-plus">+</div>
+        <div class="threshold-item">
+          <div class="abbr">POA</div>
+          <div class="full">Proof of Address</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-card">
+      <h3>Payment limit</h3>
+      <div class="limit-content">
+        <div>
+          <div class="limit-amount">100000 USD</div>
+          <div class="limit-desc">Annual cumulative transaction limit</div>
+        </div>
+        <div class="limit-icon">
+          <div class="limit-graphic">
+            <div class="bars">
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
