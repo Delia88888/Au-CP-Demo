@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vantage - Wallet / Funding</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #1a1a1a; }
+  a { text-decoration: none; color: inherit; }
+
+  /* Navbar */
+  .navbar {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fff; padding: 0 32px; height: 56px;
+    border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100;
+  }
+  .nav-left { display: flex; align-items: center; gap: 28px; }
+  .logo { display: flex; align-items: center; gap: 4px; font-size: 20px; font-weight: 700; color: #1a1a1a; }
+  .logo svg { width: 28px; height: 28px; }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a { font-size: 14px; color: #333; font-weight: 500; }
+  .nav-links a:hover { color: #e63916; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-right .icon-btn {
+    width: 36px; height: 36px; border-radius: 50%; border: none; background: none;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; color: #555; font-size: 18px;
+  }
+  .nav-right .icon-btn:hover { background: #f0f0f0; }
+  .btn-deposit-nav {
+    background: #e63916; color: #fff; border: none; border-radius: 20px;
+    padding: 8px 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .btn-deposit-nav:hover { background: #d42f10; }
+  .account-nav { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; font-weight: 500; }
+  .account-nav .avatar {
+    width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #f0c27f, #fc5c7d);
+  }
+
+  /* V-Wallet Dropdown */
+  .nav-dropdown { position: relative; padding: 16px 0; margin: -16px 0; }
+  .nav-dropdown > .nav-dropdown-trigger {
+    font-size: 14px; color: #1a1a1a; font-weight: 700; cursor: pointer;
+    background: none; border: none; font-family: inherit; padding: 4px 0;
+  }
+  .nav-dropdown > .nav-dropdown-trigger:hover { color: #e63916; }
+  .nav-dropdown-panel {
+    display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    background: #fff; border: 1px solid #eee; border-radius: 12px;
+    padding: 20px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    white-space: nowrap; z-index: 200; min-width: 700px;
+  }
+  .nav-dropdown:hover .nav-dropdown-panel { display: flex; gap: 20px; }
+  .dropdown-card {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border-radius: 10px; cursor: pointer; flex: 1; text-decoration: none; color: inherit;
+  }
+  .dropdown-card:hover { background: #f7f7f7; }
+  .dropdown-card-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #333; }
+  .dropdown-card-icon svg { width: 24px; height: 24px; }
+  .dropdown-card-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .dropdown-card-desc { font-size: 12px; color: #888; white-space: normal; line-height: 1.4; }
+  .badge-new { background: #e63916; color: #fff; font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 4px; }
+
+  /* Main */
+  .main { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+  .page-title { font-size: 28px; font-weight: 700; margin-bottom: 24px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 32px; border-bottom: 1px solid #e0e0e0; margin-bottom: 32px; }
+  .tabs .tab {
+    padding-bottom: 12px; font-size: 15px; font-weight: 500; color: #888;
+    cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s;
+  }
+  .tabs .tab:hover { color: #333; }
+  .tabs .tab.active { color: #1a1a1a; font-weight: 600; border-bottom-color: #1a1a1a; }
+
+  /* Balance Card */
+  .balance-card {
+    background: #fff; border: 1px solid #eee; border-radius: 16px;
+    padding: 28px 32px; margin-bottom: 24px;
+  }
+  .balance-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+  .est-label { font-size: 14px; color: #666; display: flex; align-items: center; gap: 8px; }
+  .est-label .eye-icon { color: #999; cursor: pointer; font-size: 16px; }
+  .history-link { font-size: 14px; color: #888; cursor: pointer; }
+  .history-link:hover { color: #333; }
+
+  .balance-main { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+  .balance-left {}
+  .balance-value {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 6px;
+  }
+  .eth-icon {
+    width: 36px; height: 36px; border-radius: 50%; background: #e8eaf6;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .balance-amount { font-size: 42px; font-weight: 700; letter-spacing: -1px; }
+  .balance-currency { font-size: 16px; font-weight: 500; color: #666; margin-left: 4px; }
+  .balance-currency .arrow { font-size: 12px; margin-left: 2px; }
+  .balance-approx { font-size: 14px; color: #888; margin-left: 48px; }
+
+  .balance-right { text-align: right; padding-top: 8px; }
+  .available-label { font-size: 13px; color: #888; margin-bottom: 6px; }
+  .available-value { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+  .available-approx { font-size: 13px; color: #888; }
+
+  .balance-actions { display: flex; gap: 12px; margin-top: 20px; }
+  .btn-action {
+    padding: 10px 24px; border-radius: 20px; border: 1px solid #ddd;
+    background: #fff; font-size: 14px; font-weight: 500; cursor: pointer; color: #333;
+  }
+  .btn-action:hover { background: #f7f7f7; }
+  .btn-action.primary { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+  .btn-action.primary:hover { background: #333; }
+
+  /* Currency Table Card */
+  .table-card {
+    background: #fff; border: 1px solid #eee; border-radius: 16px; padding: 24px 32px;
+  }
+  .table-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .table-tabs { display: flex; background: #f0f0f0; border-radius: 20px; overflow: hidden; }
+  .table-tabs .ttab {
+    padding: 8px 20px; font-size: 14px; font-weight: 500; color: #888;
+    cursor: pointer; border: none; background: none;
+  }
+  .table-tabs .ttab.active { background: #fff; color: #1a1a1a; border-radius: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .add-btn {
+    width: 32px; height: 32px; border-radius: 50%; border: 1px solid #ddd;
+    background: #fff; font-size: 20px; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; color: #333;
+  }
+  .add-btn:hover { background: #f7f7f7; }
+
+  .currency-table { width: 100%; border-collapse: collapse; }
+  .currency-table thead th {
+    text-align: left; font-size: 13px; font-weight: 500; color: #888;
+    padding: 12px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .currency-table tbody td {
+    padding: 20px 0; font-size: 14px; border-bottom: 1px solid #f5f5f5; vertical-align: middle;
+  }
+  .currency-table tbody tr:last-child td { border-bottom: none; }
+
+  .currency-cell { display: flex; align-items: center; gap: 12px; }
+  .flag-icon {
+    width: 32px; height: 32px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-size: 20px;
+    overflow: hidden;
+  }
+  .currency-name { font-weight: 600; font-size: 15px; }
+
+  .balance-col { font-weight: 600; }
+  .balance-jpy { font-size: 12px; color: #888; font-weight: 400; margin-top: 2px; }
+
+  .action-links { display: flex; gap: 16px; }
+  .action-links a {
+    font-size: 13px; font-weight: 500; color: #1a1a1a; cursor: pointer;
+    text-decoration: underline; text-underline-offset: 2px;
+  }
+  .action-links a:hover { color: #e63916; }
+  .action-links a.disabled { color: #ccc; pointer-events: none; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-left">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 28 28" fill="none">
+        <path d="M4 24L14 4l10 20H4z" fill="#e63916"/>
+        <path d="M10 24L14 12l4 12H10z" fill="#1a1a1a"/>
+      </svg>
+      Vantage
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#">Trade</a>
+      <a href="#">Copy Trading</a>
+      <a href="payment.html">Payment</a>
+      <div class="nav-dropdown">
+        <span class="nav-dropdown-trigger">Wallet</span>
+        <div class="nav-dropdown-panel">
+          <a class="dropdown-card" href="assets-funding.html">
+            <div class="dropdown-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><line x1="6" y1="6" x2="9.5" y2="10"/><line x1="18" y1="6" x2="14.5" y2="10"/><line x1="6" y1="18" x2="9.5" y2="14"/><line x1="18" y1="18" x2="14.5" y2="14"/></svg>
+            </div>
+            <div>
+              <div class="dropdown-card-title">Assets</div>
+              <div class="dropdown-card-desc">Total assets across your funding and earn accounts</div>
+            </div>
+          </a>
+          <a class="dropdown-card" href="#">
+            <div class="dropdown-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <div class="dropdown-card-title">Earn <span class="badge-new">New</span></div>
+              <div class="dropdown-card-desc">Earn Up to 4.12% APR on USDT Flexible</div>
+            </div>
+          </a>
+          <a class="dropdown-card" href="#">
+            <div class="dropdown-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            </div>
+            <div>
+              <div class="dropdown-card-title">Card</div>
+              <div class="dropdown-card-desc">Virtual and physical card</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <a href="#">Promotions</a>
+      <a href="#">More</a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="btn-deposit-nav">Deposit</button>
+    <button class="icon-btn" title="Download">&#8615;</button>
+    <button class="icon-btn" title="Chat">&#128172;</button>
+    <button class="icon-btn" title="Language">&#127760;</button>
+    <div class="account-nav">
+      <div class="avatar"></div>
+      Account &#9662;
+    </div>
+  </div>
+</nav>
+
+<!-- Main -->
+<div class="main">
+  <h1 class="page-title">V-Wallet</h1>
+
+  <div class="tabs">
+    <div class="tab">Overview</div>
+    <div class="tab active">Funding</div>
+    <div class="tab">Earn</div>
+  </div>
+
+  <!-- Balance Card -->
+  <div class="balance-card">
+    <div class="balance-top">
+      <div class="est-label">Est. Total Value <span class="eye-icon">&#9673;</span></div>
+      <div class="history-link">History &rsaquo;</div>
+    </div>
+    <div class="balance-main">
+      <div class="balance-left">
+        <div class="balance-value">
+          <div class="eth-icon">&#9830;</div>
+          <span class="balance-amount">0.02439012</span>
+          <span class="balance-currency">ETH <span class="arrow">&#9662;</span></span>
+        </div>
+        <div class="balance-approx">&asymp; 9,299 JPY</div>
+      </div>
+      <div class="balance-right">
+        <div class="available-label">Available Balance</div>
+        <div class="available-value">0.02439012 ETH</div>
+        <div class="available-approx">&asymp; 9,299 JPY</div>
+      </div>
+    </div>
+    <div class="balance-actions">
+      <button class="btn-action primary">Deposit</button>
+      <button class="btn-action">Withdraw</button>
+      <button class="btn-action">Transfer</button>
+      <button class="btn-action">Convert</button>
+    </div>
+  </div>
+
+  <!-- Currency Table -->
+  <div class="table-card">
+    <div class="table-top">
+      <div class="table-tabs">
+        <button class="ttab active">Fiat</button>
+        <button class="ttab">Crypto</button>
+      </div>
+      <button class="add-btn">+</button>
+    </div>
+
+    <table class="currency-table">
+      <thead>
+        <tr>
+          <th style="width:18%">Currency</th>
+          <th style="width:18%">Balance</th>
+          <th style="width:18%">Available Balance</th>
+          <th style="width:18%">Frozen Balance</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="currency-cell">
+              <div class="flag-icon">&#127482;&#127480;</div>
+              <span class="currency-name">USD</span>
+            </div>
+          </td>
+          <td>
+            <div class="balance-col">15.99</div>
+            <div class="balance-jpy">&asymp; 2,538 JPY</div>
+          </td>
+          <td>15.99</td>
+          <td>0.00</td>
+          <td>
+            <div class="action-links">
+              <a href="#">Deposit</a>
+              <a href="#">Withdraw</a>
+              <a href="#">Transfer</a>
+              <a href="#">Convert</a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="currency-cell">
+              <div class="flag-icon">&#127462;&#127482;</div>
+              <span class="currency-name">AUD</span>
+            </div>
+          </td>
+          <td>
+            <div class="balance-col">0.00</div>
+            <div class="balance-jpy">&asymp; 0 JPY</div>
+          </td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>
+            <div class="action-links">
+              <a href="#">Deposit</a>
+              <a class="disabled">Withdraw</a>
+              <a href="#">Transfer</a>
+              <a href="#">Convert</a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="currency-cell">
+              <div class="flag-icon">&#127464;&#127462;</div>
+              <span class="currency-name">CAD</span>
+            </div>
+          </td>
+          <td>
+            <div class="balance-col">0.00</div>
+            <div class="balance-jpy">&asymp; 0 JPY</div>
+          </td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>
+            <div class="action-links">
+              <a href="#">Deposit</a>
+              <a class="disabled">Withdraw</a>
+              <a href="#">Transfer</a>
+              <a href="#">Convert</a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="currency-cell">
+              <div class="flag-icon">&#127466;&#127482;</div>
+              <span class="currency-name">EUR</span>
+            </div>
+          </td>
+          <td>
+            <div class="balance-col">0.00</div>
+            <div class="balance-jpy">&asymp; 0 JPY</div>
+          </td>
+          <td>0.00</td>
+          <td>0.00</td>
+          <td>
+            <div class="action-links">
+              <a href="#">Deposit</a>
+              <a class="disabled">Withdraw</a>
+              <a href="#">Transfer</a>
+              <a href="#">Convert</a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>
