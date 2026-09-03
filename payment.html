@@ -21,7 +21,8 @@
   .nav-links { display: flex; gap: 24px; align-items: center; }
   .nav-links a { font-size: 14px; color: #333; font-weight: 500; }
   .nav-links a:hover { color: #e63916; }
-  .nav-links a.active { color: #1a1a1a; font-weight: 700; }
+  .nav-links a.active { color: #e63916; font-weight: 700; position: relative; }
+  .nav-links a.active::after { content: ""; position: absolute; bottom: -18px; left: 0; right: 0; height: 3px; background: #e63916; border-radius: 2px; }
 
   /* Wallet Dropdown */
   .nav-dropdown { position: relative; padding: 16px 0; margin: -16px 0; }
