@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vantage - Accounts</title>
+<title>Vantage - Funds</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #1a1a1a; }
@@ -274,7 +274,7 @@
     </a>
     <div class="nav-links">
       <a href="index.html">Home</a>
-      <a href="accounts.html" class="active">Accounts</a>
+      <a href="funds.html" class="active">Funds</a>
       <a href="#">Trade</a>
       <a href="#">Copy Trading</a>
       <a href="payment.html">Payment</a>
@@ -319,7 +319,7 @@
 
 <!-- Main -->
 <div class="main">
-  <h1 class="page-title">Accounts</h1>
+  <h1 class="page-title">Funds</h1>
 
   <!-- Tabs -->
   <div class="page-tabs">
@@ -530,7 +530,7 @@
         <div class="account-option-balance">294.00 USC</div>
         <div class="account-option-id">#24218347</div>
       </a>
-      <a class="account-option" href="accounts.html#funding">
+      <a class="account-option" href="funds.html#funding">
         <div class="account-option-top"><span class="acct-badge funding">Funding</span></div>
         <div class="account-option-balance">&asymp;47,632.98 USD</div>
       </a>
@@ -559,22 +559,22 @@ document.getElementById("depositModal").addEventListener("click",function(e){
       <button class="ctab">Crypto</button>
     </div>
     <div class="currency-list">
-      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127482;&#127480;</span><span class="currency-code">USD</span></a>
-      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127468;&#127463;</span><span class="currency-code">GBP</span></a>
-      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127466;&#127482;</span><span class="currency-code">EUR</span></a>
-      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127464;&#127462;</span><span class="currency-code">CAD</span></a>
-      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127462;&#127482;</span><span class="currency-code">AUD</span></a>
-      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127475;&#127487;</span><span class="currency-code">NZD</span></a>
-      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127480;&#127468;</span><span class="currency-code">SGD</span></a>
-      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127469;&#127472;</span><span class="currency-code">HKD</span></a>
-      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127471;&#127477;</span><span class="currency-code">JPY</span></a>
-      <a class="currency-item" href="accounts.html#funding"><span class="currency-flag">&#127462;&#127466;</span><span class="currency-code">AED</span></a>
+      <a class="currency-item" href="funds.html#funding"><span class="currency-flag">&#127482;&#127480;</span><span class="currency-code">USD</span></a>
+      <a class="currency-item" href="funds.html#funding"><span class="currency-flag">&#127468;&#127463;</span><span class="currency-code">GBP</span></a>
+      <a class="currency-item" href="funds.html#funding"><span class="currency-flag">&#127466;&#127482;</span><span class="currency-code">EUR</span></a>
+      <a class="currency-item" href="funds.html#funding"><span class="currency-flag">&#127464;&#127462;</span><span class="currency-code">CAD</span></a>
+      <a class="currency-item" href="funds.html#funding"><span class="currency-flag">&#127462;&#127482;</span><span class="currency-code">AUD</span></a>
+      <a class="currency-item" href="funds.html#funding"><span class="currency-flag">&#127475;&#127487;</span><span class="currency-code">NZD</span></a>
+      <a class="currency-item" href="funds.html#funding"><span class="currency-flag">&#127480;&#127468;</span><span class="currency-code">SGD</span></a>
+      <a class="currency-item" href="funds.html#funding"><span class="currency-flag">&#127469;&#127472;</span><span class="currency-code">HKD</span></a>
+      <a class="currency-item" href="funds.html#funding"><span class="currency-flag">&#127471;&#127477;</span><span class="currency-code">JPY</span></a>
+      <a class="currency-item" href="funds.html#funding"><span class="currency-flag">&#127462;&#127466;</span><span class="currency-code">AED</span></a>
     </div>
   </div>
 </div>
 
 <script>
-document.querySelectorAll('.account-option[href="accounts.html#funding"]').forEach(function(el){
+document.querySelectorAll('.account-option[href="funds.html#funding"]').forEach(function(el){
   el.addEventListener('click', function(e){
     e.preventDefault();
     document.getElementById('depositModal').classList.remove('show');
