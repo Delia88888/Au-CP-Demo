@@ -206,7 +206,7 @@
   /* Deposit Modal */
   .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 1000; align-items: center; justify-content: center; }
   .modal-overlay.show { display: flex; }
-  .modal { background: #fff; border-radius: 16px; padding: 32px; width: 420px; max-width: 90vw; position: relative; }
+  .modal { background: #fff; border-radius: 16px; padding: 32px; width: 480px; max-width: 90vw; max-height: 85vh; overflow-y: auto; position: relative; }
   .modal-close { position: absolute; top: 16px; right: 16px; border: none; background: none; font-size: 20px; cursor: pointer; color: #999; }
   .modal-close:hover { color: #333; }
   .modal h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
@@ -219,6 +219,7 @@
   .modal-option-title { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
   .modal-option-desc { font-size: 12px; color: #888; }
   .modal-option-arrow { color: #ccc; font-size: 18px; }
+  .modal-section-label { font-size: 13px; font-weight: 600; color: #888; margin-bottom: 8px; }
 </style>
 </head>
 <body>
@@ -468,24 +469,52 @@
     <button class="modal-close" onclick="document.getElementById('depositModal').classList.remove('show')">&times;</button>
     <h3>Deposit</h3>
     <p>Select the account you want to deposit to</p>
-    <div class="modal-options">
-      <a class="modal-option" href="payment.html">
-        <div class="modal-option-icon">&#128200;</div>
-        <div class="modal-option-text">
-          <div class="modal-option-title">Trading</div>
-          <div class="modal-option-desc">Deposit to your trading accounts</div>
-        </div>
-        <span class="modal-option-arrow">&rsaquo;</span>
-      </a>
-      <a class="modal-option" href="accounts.html#funding">
-        <div class="modal-option-icon">&#128176;</div>
-        <div class="modal-option-text">
-          <div class="modal-option-title">Funding</div>
-          <div class="modal-option-desc">Deposit to your funding wallet</div>
-        </div>
-        <span class="modal-option-arrow">&rsaquo;</span>
-      </a>
-    </div>
+    <div class="modal-section-label">Trading</div>
+      <div class="modal-options">
+        <a class="modal-option" href="payment.html">
+          <div class="modal-option-icon">&#127482;&#127480;</div>
+          <div class="modal-option-text">
+            <div class="modal-option-title">9260026 - $ 107.86 USD - Standard STP</div>
+            <div class="modal-option-desc">MT5 | VantageMarkets-Live 8</div>
+          </div>
+          <span class="modal-option-arrow">&rsaquo;</span>
+        </a>
+        <a class="modal-option" href="payment.html">
+          <div class="modal-option-icon">&#127482;&#127480;</div>
+          <div class="modal-option-text">
+            <div class="modal-option-title">7724914 - $ 0.00 USD - Standard STP</div>
+            <div class="modal-option-desc">MT4 | VantageMarkets-Live 7</div>
+          </div>
+          <span class="modal-option-arrow">&rsaquo;</span>
+        </a>
+        <a class="modal-option" href="payment.html">
+          <div class="modal-option-icon">&#127482;&#127480;</div>
+          <div class="modal-option-text">
+            <div class="modal-option-title">24218347 - $ 294.00 USC - Standard STP</div>
+            <div class="modal-option-desc">MT5 | VantageMarkets-Live</div>
+          </div>
+          <span class="modal-option-arrow">&rsaquo;</span>
+        </a>
+        <a class="modal-option" href="payment.html">
+          <div class="modal-option-icon">&#127466;&#127482;</div>
+          <div class="modal-option-text">
+            <div class="modal-option-title">24218348 - $ 0.87 EUR - Cent STP</div>
+            <div class="modal-option-desc">MT5 | VantageMarkets-Live</div>
+          </div>
+          <span class="modal-option-arrow">&rsaquo;</span>
+        </a>
+      </div>
+      <div class="modal-section-label" style="margin-top:16px">Funding</div>
+      <div class="modal-options">
+        <a class="modal-option" href="accounts.html#funding">
+          <div class="modal-option-icon">&#128176;</div>
+          <div class="modal-option-text">
+            <div class="modal-option-title">Funding Wallet</div>
+            <div class="modal-option-desc">Deposit to your funding wallet</div>
+          </div>
+          <span class="modal-option-arrow">&rsaquo;</span>
+        </a>
+      </div>
   </div>
 </div>
 <script>
