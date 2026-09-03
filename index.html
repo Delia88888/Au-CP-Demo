@@ -322,7 +322,7 @@
         </div>
       </div>
       <div class="action-buttons">
-        <button class="btn-action primary">Deposit</button>
+        <button class="btn-action primary btn-deposit-page">Deposit</button>
         <button class="btn-action">Withdrawal</button>
         <button class="btn-action">Transfer</button>
         <button class="btn-action icon-only" title="Statements">&#128196;</button>
@@ -515,7 +515,7 @@
   </div>
 </div>
 <script>
-document.querySelectorAll(".btn-deposit-nav").forEach(function(btn){
+document.querySelectorAll(".btn-deposit-nav, .btn-deposit-page").forEach(function(btn){
   btn.addEventListener("click",function(e){
     e.preventDefault();
     document.getElementById("depositModal").classList.add("show");
