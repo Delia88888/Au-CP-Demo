@@ -259,13 +259,21 @@
     </a>
     <div class="nav-links">
       <a href="#" class="active">Home</a>
-      <a href="funds.html">Accounts</a>
       <a href="#">Trade</a>
       <a href="#">Copy Trading</a>
       <a href="payment.html">Funds</a>
       <div class="nav-dropdown">
         <span class="nav-dropdown-trigger">Wallet</span>
         <div class="nav-dropdown-panel">
+          <a class="dropdown-card" href="assets-funding.html">
+            <div class="dropdown-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="4" cy="6" r="2"/><circle cx="20" cy="6" r="2"/><circle cx="4" cy="18" r="2"/><circle cx="20" cy="18" r="2"/><line x1="6" y1="6" x2="9.5" y2="10"/><line x1="18" y1="6" x2="14.5" y2="10"/><line x1="6" y1="18" x2="9.5" y2="14"/><line x1="18" y1="18" x2="14.5" y2="14"/></svg>
+            </div>
+            <div>
+              <div class="dropdown-card-title">Assets</div>
+              <div class="dropdown-card-desc">Total assets across your funding and earn accounts</div>
+            </div>
+          </a>
           <a class="dropdown-card" href="earn.html">
             <div class="dropdown-card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -326,7 +334,7 @@
         <button class="btn-action">Withdrawal</button>
         <button class="btn-action">Transfer</button>
         <button class="btn-action icon-only" title="Statements">&#128196;</button>
-        <button class="btn-action">&#9776; Account</button>
+        <button class="btn-action" onclick="window.location.href='funds.html'">&#9776; Account</button>
       </div>
       <div class="announcement">
         <span class="bell">&#128276;</span>
